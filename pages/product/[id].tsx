@@ -37,6 +37,8 @@ export default function ProductDetail({ toy }: { toy: Toy }) {
             const response = await fetch('/api/product', { method: "POST", body: JSON.stringify(purchaseInfo) })
             if (response.status === 200) {
                 setPurchased(true)
+            } else { 
+                console.log(response)
             }
         }
     }
