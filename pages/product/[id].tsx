@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toysRepo } from "../../helpers/products-repo";
+import { userRepo } from "../../helpers/users-repo";
 import { Toy } from "../../interfaces/Toy";
 
 interface PurchaseInfo {
@@ -17,40 +19,15 @@ export default function ProductDetail({ toy }: { toy: Toy }) {
     const [purchased, setPurchased] = useState(false);
     const [user, setUser] = useState("");
 
-    const purchase = async () => {
-        const currentUser: string | null = localStorage.getItem('user');
-        if (currentUser) {
-            const purchaseInfo: PurchaseInfo = {
-                id: toy.id,
-                serial_no: toy.serial_no,
-                previous_owner: toy.owner ? toy.owner : 'None',
-                purchase_price: toy.price,
-                purchase_owner: currentUser,
-                purchase_date: new Date().toLocaleString(),
-                purchase_type: 'purchase'
-
-            }
-            const response = await fetch('/api/product', { method: "POST", body: JSON.stringify(purchaseInfo) })
-            if (response.status === 200) {
-                setPurchased(true)
-            } else {
-                console.error(response)
-            }
-        }
-    }
-
-    const trade = () => {
-
-
-    }
 
     useEffect(() => {
-        const user = localStorage.getItem('user');
+        const user = userRepo.getLocalUser()
         if (user) {
             setUser(user)
         }
     }, [])
 
+    console.log(toy.owner.split(",").some(owners => owners == user))
 
     return (
         <article className="flex flex-col items-center w-full h-full">
@@ -69,12 +46,14 @@ export default function ProductDetail({ toy }: { toy: Toy }) {
                     </section>
                     <span className="block text-sm mt-4">{toy.date}</span>
                     <button
-                        onClick={() => purchase()}
-                        className={`${user === toy.owner ? 'bg-gray-400 text-gray-500' : ''} p-2 rounded-md bg-emerald-400 text-white shadow-sm`} disabled={user === toy.owner ? true : false}>{purchased || user === toy.owner ? 'Purchased' : 'Buy'}
+                        onClick={() => toysRepo.purchase(toy).then(() => setPurchased(true))}
+                        className={`${toy.owner.split(",").some(owners => owners == user) ? 'bg-gray-400 text-gray-500' : ''} p-2 rounded-md bg-emerald-400 text-white shadow-sm`}
+                        disabled={purchased || toy.owner.split(",").some(owners => owners == user) ? true : false}>
+                        {purchased || toy.owner.split(",").some(owners => owners == user) ? 'Purchased' : 'Buy'}
                     </button>
-                    {toy.owner && toy.owner !== user && toy.series !== 'Happy Turtles'
+                    {(toy.owner && !toy.owner.split(",").some(owners => owners == user) && toy.series != 'Happy Turtles')
                         ? <button
-                            onClick={() => trade()}
+                            onClick={() => toysRepo.trade(toy)}
                             className="border border-black p-2 rounded-md">
                             Trade
                         </button>
@@ -84,7 +63,7 @@ export default function ProductDetail({ toy }: { toy: Toy }) {
                     <span className="text-xs text-gray-400">Serial no : {toy.serial_no}</span>
                 </section>
             </article>
-        </article>
+        </article >
 
     )
 }
@@ -92,10 +71,8 @@ export default function ProductDetail({ toy }: { toy: Toy }) {
 export async function getServerSideProps(context: any) {
 
     const { id } = context.query;
-    const data = await import('../../MOCK.json');
-    const records = await import('../../RECORD.json');
-    const toy = data.default.find((toy) => toy.id == id);
 
+    const toy = await toysRepo.getById(id)
     return {
         props: { toy }
     }

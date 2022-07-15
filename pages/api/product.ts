@@ -1,21 +1,23 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { toysRepo } from '../../helpers/products-repo';
 import { Toy } from '../../interfaces/Toy';
 
-
+const RECORD_DATA = './data/RECORD.json';
+const MOCK_DATA = './data/MOCK.json';
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
     const writeToRecord = (data: Toy | Toy[]) => {
-        fs.writeFileSync('./RECORD.json', JSON.stringify(data));
+        fs.writeFileSync(RECORD_DATA, JSON.stringify(data));
     }
 
     const writeToMock = (data: Toy[]) => {
         try {
-            fs.writeFileSync('./MOCK.json', JSON.stringify(data));
+            fs.writeFileSync(MOCK_DATA, JSON.stringify(data));
             return { status: true }
         } catch (error) {
             return { status: false, error: error }
@@ -23,31 +25,34 @@ export default async function handler(
     }
 
     const readMockFile = () => {
-        const data = fs.readFileSync('./MOCK.json');
+        const data = fs.readFileSync(MOCK_DATA);
         const parsedData = JSON.parse(data.toString());
         return parsedData
     }
 
     const readRecordFile = () => {
-        const data = fs.readFileSync('./RECORD.json');
+        const data = fs.readFileSync(RECORD_DATA);
         const parsedData = JSON.parse(data.toString());
         return parsedData
     }
 
     if (req.method === "POST") {
-
-        const parsedBody = JSON.parse(req.body);
+        const parsedBody = req.body
 
         try {
-            const data = fs.readFileSync('./RECORD.json');
+            //First get the record data 
+            const data = fs.readFileSync(RECORD_DATA);
 
+            //Check if record data file is empty, if it is then populate data in array
             if (data.byteLength === 0) {
                 return writeToRecord([parsedBody])
             }
 
+
             const parsedData = JSON.parse(data.toString());
             parsedData.push(parsedBody)
             writeToRecord(parsedData)
+            res.status(200).json({ message: "Saved successfully" });
 
         } catch (error: any) {
             if (error.code === "ENOENT") {
@@ -61,14 +66,17 @@ export default async function handler(
         const toys: Toy[] = readMockFile();
         const updatedToys = toys.map((toy) => {
             if (toy.id === parsedBody.id) {
-                toy.owner = parsedBody.purchase_owner
+                if ((toy.owner == "") || toy.owner == "None") {
+                    toy.owner = parsedBody.purchase_owner
+                } else {
+                    toy.owner = toy.owner + "," + parsedBody.purchase_owner
+                }
             }
             return toy
         })
         console.log('Updated toys', updatedToys)
         writeToMock(updatedToys);
 
-        res.status(200).json({ message: "Saved successfully" });
 
     } else {
         const parsedData = readMockFile();

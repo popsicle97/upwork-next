@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
+import { toysRepo } from '../helpers/products-repo';
 import { Toy } from '../interfaces/Toy';
 
 
@@ -40,8 +41,8 @@ export default function Home({ data = [] }: { data: (Toy)[] }) {
 }
 
 export async function getStaticProps() {
-  const data = await import('../MOCK.json');
-  return { props: { data: data.default } }
+  const data = await toysRepo.getAll()
+  return { props: { data: data } }
 }
 
 
