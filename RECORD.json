@@ -1,1 +1,57 @@
-[{"id":5,"name":"Toy-54","series":"Happy Turtles","description":"tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat","serial_no":"54H1442076430","previous_owners":"","purchase_price":"USD 277","purchase_owner":"user39651824","purchase_date":"14/07/2022, 18:11:02"},{"id":3,"name":"Toy-74","series":"Mr.bears","description":"neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales","serial_no":"74M9255786793","previous_owner":"Jean","purchase_price":"USD 113","purchase_owner":"user39651824","purchase_date":"14/07/2022, 18:12:10"},{"id":3,"name":"Toy-74","series":"Mr.bears","description":"neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales","serial_no":"74M9255786793","previous_owner":"Jean","purchase_price":"USD 113","purchase_owner":"user39651824","purchase_date":"14/07/2022, 18:15:41"}]
+[
+    {
+        "id": 5,
+        "name": "Toy-54",
+        "series": "Happy Turtles",
+        "description": "tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat",
+        "serial_no": "54H1442076430",
+        "previous_owners": "",
+        "purchase_price": "USD 277",
+        "purchase_owner": "user39651824",
+        "purchase_date": "14/07/2022, 18:11:02"
+    },
+    {
+        "id": 3,
+        "name": "Toy-74",
+        "series": "Mr.bears",
+        "description": "neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales",
+        "serial_no": "74M9255786793",
+        "previous_owner": "Jean",
+        "purchase_price": "USD 113",
+        "purchase_owner": "user39651824",
+        "purchase_date": "14/07/2022, 18:12:10"
+    },
+    {
+        "id": 3,
+        "name": "Toy-74",
+        "series": "Mr.bears",
+        "description": "neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales",
+        "serial_no": "74M9255786793",
+        "previous_owner": "Jean",
+        "purchase_price": "USD 113",
+        "purchase_owner": "user39651824",
+        "purchase_date": "14/07/2022, 18:15:41"
+    },
+    {
+        "id": 3,
+        "name": "Toy-74",
+        "series": "Mr.bears",
+        "description": "neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales",
+        "serial_no": "74M9255786793",
+        "previous_owner": "Jean",
+        "purchase_price": "USD 113",
+        "purchase_owner": "user39651824",
+        "purchase_date": "14/07/2022, 18:51:01"
+    },
+    {
+        "id": 3,
+        "name": "Toy-74",
+        "series": "Mr.bears",
+        "description": "neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales",
+        "serial_no": "74M9255786793",
+        "previous_owner": "Jean",
+        "purchase_price": "USD 113",
+        "purchase_owner": "user39651824",
+        "purchase_date": "15/07/2022, 00:56:34"
+    }
+]
